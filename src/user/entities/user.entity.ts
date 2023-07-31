@@ -2,11 +2,11 @@ import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class UserEntity {
   @IsUUID(4)
-  id: string;
+  readonly id: string;
 
   @IsNotEmpty()
   @IsString()
-  login: string;
+  readonly login: string;
 
   @IsNotEmpty()
   @IsString()
