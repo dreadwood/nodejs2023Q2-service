@@ -4,12 +4,15 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  NotFoundException,
   Param,
+  ParseUUIDPipe,
   Post,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { isUUID } from 'class-validator';
 import { CreateUserDto } from './dto/create-user.dto';
+import { MessagesResponse } from 'src/const';
 
 @Controller('user')
 @Controller()
@@ -22,18 +25,11 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    if (!isUUID(id, 4)) {
-      throw new HttpException(
-        'User ID is invalid (not uuid)',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
+  findOne(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
     const user = this.userService.findOne(id);
 
     if (!user) {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      throw new NotFoundException(MessagesResponse.USER_NOT_FOUND);
     }
 
     return user;
