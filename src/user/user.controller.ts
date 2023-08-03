@@ -1,18 +1,22 @@
 import {
   Body,
   Controller,
+  Delete,
+  ForbiddenException,
   Get,
-  HttpException,
+  HttpCode,
   HttpStatus,
+  InternalServerErrorException,
   NotFoundException,
   Param,
   ParseUUIDPipe,
   Post,
+  Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { isUUID } from 'class-validator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { MessagesResponse } from 'src/const';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Controller('user')
 @Controller()
@@ -38,5 +42,40 @@ export class UserController {
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
+  }
+
+  @Put(':id')
+  update(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Body() updatePasswordDto: UpdatePasswordDto,
+  ) {
+    const updateValue = this.userService.update(id, updatePasswordDto);
+
+    if (typeof updateValue !== 'string') {
+      return updateValue;
+    }
+
+    switch (updateValue) {
+      case MessagesResponse.USER_NOT_FOUND:
+        throw new NotFoundException(MessagesResponse.USER_NOT_FOUND);
+
+      case MessagesResponse.PASSWORD_WRONG:
+        throw new ForbiddenException(MessagesResponse.PASSWORD_WRONG);
+
+      default:
+        throw new InternalServerErrorException(
+          MessagesResponse.INTERNAL_SERVER_ERROR,
+        );
+    }
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
+    const user = this.userService.remove(id);
+
+    if (!user) {
+      throw new NotFoundException(MessagesResponse.USER_NOT_FOUND);
+    }
   }
 }
