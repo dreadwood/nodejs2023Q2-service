@@ -14,12 +14,11 @@ import {
   Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { MessagesResponse } from 'src/const';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Controller('user')
-@Controller()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -40,16 +39,16 @@ export class UserController {
   }
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  create(@Body() dto: CreateUserDto) {
+    return this.userService.create(dto);
   }
 
   @Put(':id')
   update(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-    @Body() updatePasswordDto: UpdatePasswordDto,
+    @Body() dto: UpdatePasswordDto,
   ) {
-    const updateValue = this.userService.update(id, updatePasswordDto);
+    const updateValue = this.userService.update(id, dto);
 
     if (typeof updateValue !== 'string') {
       return updateValue;

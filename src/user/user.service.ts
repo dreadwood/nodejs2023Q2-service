@@ -9,8 +9,8 @@ import { UserResponseEntity } from './entities/user-response.entity';
 export class UserService {
   constructor(private storage: InMemoryUserStorage) {}
 
-  create(createUserDto: CreateUserDto) {
-    return this.storage.create(createUserDto);
+  create(dto: CreateUserDto) {
+    return this.storage.create(dto);
   }
 
   findAll() {
@@ -23,7 +23,7 @@ export class UserService {
 
   update(
     id: string,
-    updatePasswordDto: UpdatePasswordDto,
+    dto: UpdatePasswordDto,
   ): MessagesResponse | UserResponseEntity {
     const userRaw = this.storage.findRawOne(id);
 
@@ -31,11 +31,11 @@ export class UserService {
       return MessagesResponse.USER_NOT_FOUND;
     }
 
-    if (userRaw.password !== updatePasswordDto.oldPassword) {
+    if (userRaw.password !== dto.oldPassword) {
       return MessagesResponse.PASSWORD_WRONG;
     }
 
-    return this.storage.update(id, updatePasswordDto.newPassword);
+    return this.storage.update(id, dto.newPassword);
   }
 
   remove(id: string) {
