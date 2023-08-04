@@ -4,10 +4,28 @@ import { ArtistStorage } from '../interfaces/artist-storage.interfaces';
 import { ArtistEntity } from '../entities/artist.entity';
 import { CreateArtistDto } from '../dto/create-artist.dto';
 import { UpdateArtistDto } from '../dto/update-artist.dto';
+import { TrackStorage } from 'src/track/interfaces/track-storage.interfaces';
+import { AlbumStorage } from 'src/album/interfaces/album-storage.interfaces';
+import { ModuleRef } from '@nestjs/core';
+import { InMemoryAlbumStorage } from 'src/album/store/in-memory-album.storage';
+import { InMemoryTrackStorage } from 'src/track/store/in-memory-track.storage';
 
 @Injectable()
 export class InMemoryArtistStorage implements ArtistStorage {
   private artists: ArtistEntity[] = [];
+  private albumStorage: AlbumStorage;
+  private trackStorage: TrackStorage;
+
+  constructor(private moduleRef: ModuleRef) {}
+
+  onModuleInit() {
+    this.albumStorage = this.moduleRef.get(InMemoryAlbumStorage, {
+      strict: false,
+    });
+    this.trackStorage = this.moduleRef.get(InMemoryTrackStorage, {
+      strict: false,
+    });
+  }
 
   findAll(): ArtistEntity[] {
     return this.artists;
@@ -53,6 +71,9 @@ export class InMemoryArtistStorage implements ArtistStorage {
       ...this.artists.slice(0, removeIndex),
       ...this.artists.slice(removeIndex + 1),
     ];
+
+    this.albumStorage.clearArtistId(id);
+    this.trackStorage.clearArtistId(id);
 
     return true;
   }

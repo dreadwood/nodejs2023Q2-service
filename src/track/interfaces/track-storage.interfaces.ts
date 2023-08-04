@@ -8,4 +8,6 @@ export interface TrackStorage {
   create: (dto: CreateTrackDto) => TrackEntity;
   update: (id: string, dto: UpdateTrackDto) => TrackEntity;
   remove: (id: string) => boolean;
+  clearAlbumId: (id: string) => void;
+  clearArtistId: (id: string) => void;
 }

@@ -16,13 +16,13 @@ export class TrackEntity {
 
   @IsString()
   @IsOptional()
-  artistId: string | null; // TODO: refers to Artist
+  artistId: string | null;
 
   @IsString()
   @IsOptional()
-  albumId: string | null; // TODO: refers to Album
+  albumId: string | null;
 
   @IsNotEmpty()
   @IsNumber()
-  duration: number; // integer number
+  duration: number;
 }

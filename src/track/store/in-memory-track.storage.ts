@@ -58,4 +58,20 @@ export class InMemoryTrackStorage implements TrackStorage {
 
     return true;
   }
+
+  clearAlbumId(id: string): void {
+    this.tracks.forEach((track) => {
+      if (track.albumId === id) {
+        track.albumId = null;
+      }
+    });
+  }
+
+  clearArtistId(id: string): void {
+    this.tracks.forEach((track) => {
+      if (track.artistId === id) {
+        track.artistId = null;
+      }
+    });
+  }
 }

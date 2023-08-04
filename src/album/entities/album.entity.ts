@@ -20,5 +20,5 @@ export class AlbumEntity {
 
   @IsString()
   @IsOptional()
-  artistId: string | null; // TODO: refers to Artist
+  artistId: string | null;
 }

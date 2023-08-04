@@ -8,4 +8,5 @@ export interface AlbumStorage {
   create: (dto: CreateAlbumDto) => AlbumEntity;
   update: (id: string, dto: UpdateAlbumDto) => AlbumEntity;
   remove: (id: string) => boolean;
+  clearArtistId: (id: string) => void;
 }
