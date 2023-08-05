@@ -63,10 +63,7 @@ export class InMemoryTrackStorage implements TrackStorage {
       return false;
     }
 
-    this.tracks = [
-      ...this.tracks.slice(0, removeIndex),
-      ...this.tracks.slice(removeIndex + 1),
-    ];
+    this.tracks.splice(removeIndex, 1);
 
     this.favoritesStorage.removeTrack(id);
 

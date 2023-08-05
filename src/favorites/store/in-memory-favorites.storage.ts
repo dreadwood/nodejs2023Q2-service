@@ -10,8 +10,6 @@ import { ArtistStorage } from 'src/artist/interfaces/artist-storage.interfaces';
 import { FavoritesEntity } from '../entities/favorites.entity';
 import { FavoritesResponceEntity } from '../entities/favorites-response.entity';
 
-// TODO: 2023-08-04 / проверка, что элемент уже добавлен?
-
 @Injectable()
 export class InMemoryFavoriteStorage implements FavoritesStorage {
   private favorites: FavoritesEntity = new FavoritesEntity();

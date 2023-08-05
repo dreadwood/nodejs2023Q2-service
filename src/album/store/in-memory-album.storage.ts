@@ -68,10 +68,7 @@ export class InMemoryAlbumStorage implements AlbumStorage {
       return false;
     }
 
-    this.albums = [
-      ...this.albums.slice(0, removeIndex),
-      ...this.albums.slice(removeIndex + 1),
-    ];
+    this.albums.splice(removeIndex, 1);
 
     this.trackStorage.clearAlbumId(id);
     this.favoritesStorage.removeAlbum(id);

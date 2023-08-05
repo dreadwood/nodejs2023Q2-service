@@ -73,10 +73,7 @@ export class InMemoryArtistStorage implements ArtistStorage {
       return false;
     }
 
-    this.artists = [
-      ...this.artists.slice(0, removeIndex),
-      ...this.artists.slice(removeIndex + 1),
-    ];
+    this.artists.splice(removeIndex, 1);
 
     this.albumStorage.clearArtistId(id);
     this.trackStorage.clearArtistId(id);
