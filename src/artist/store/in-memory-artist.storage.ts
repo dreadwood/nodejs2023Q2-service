@@ -9,12 +9,15 @@ import { AlbumStorage } from 'src/album/interfaces/album-storage.interfaces';
 import { ModuleRef } from '@nestjs/core';
 import { InMemoryAlbumStorage } from 'src/album/store/in-memory-album.storage';
 import { InMemoryTrackStorage } from 'src/track/store/in-memory-track.storage';
+import { InMemoryFavoriteStorage } from 'src/favorites/store/in-memory-favorites.storage';
+import { FavoritesStorage } from 'src/favorites/interfaces/favorites-storage.interfaces';
 
 @Injectable()
 export class InMemoryArtistStorage implements ArtistStorage {
   private artists: ArtistEntity[] = [];
   private albumStorage: AlbumStorage;
   private trackStorage: TrackStorage;
+  private favoritesStorage: FavoritesStorage;
 
   constructor(private moduleRef: ModuleRef) {}
 
@@ -23,6 +26,9 @@ export class InMemoryArtistStorage implements ArtistStorage {
       strict: false,
     });
     this.trackStorage = this.moduleRef.get(InMemoryTrackStorage, {
+      strict: false,
+    });
+    this.favoritesStorage = this.moduleRef.get(InMemoryFavoriteStorage, {
       strict: false,
     });
   }
@@ -74,7 +80,12 @@ export class InMemoryArtistStorage implements ArtistStorage {
 
     this.albumStorage.clearArtistId(id);
     this.trackStorage.clearArtistId(id);
+    this.favoritesStorage.removeArtist(id);
 
     return true;
+  }
+
+  exist(id): boolean {
+    return this.artists.some((artist) => artist.id === id);
   }
 }

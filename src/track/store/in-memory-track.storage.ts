@@ -4,10 +4,22 @@ import { TrackStorage } from '../interfaces/track-storage.interfaces';
 import { TrackEntity } from '../entities/track.entity';
 import { CreateTrackDto } from '../dto/create-track.dto';
 import { UpdateTrackDto } from '../dto/update-track.dto';
+import { InMemoryFavoriteStorage } from 'src/favorites/store/in-memory-favorites.storage';
+import { FavoritesStorage } from 'src/favorites/interfaces/favorites-storage.interfaces';
+import { ModuleRef } from '@nestjs/core';
 
 @Injectable()
 export class InMemoryTrackStorage implements TrackStorage {
   private tracks: TrackEntity[] = [];
+  private favoritesStorage: FavoritesStorage;
+
+  constructor(private moduleRef: ModuleRef) {}
+
+  onModuleInit() {
+    this.favoritesStorage = this.moduleRef.get(InMemoryFavoriteStorage, {
+      strict: false,
+    });
+  }
 
   findAll(): TrackEntity[] {
     return this.tracks;
@@ -56,6 +68,8 @@ export class InMemoryTrackStorage implements TrackStorage {
       ...this.tracks.slice(removeIndex + 1),
     ];
 
+    this.favoritesStorage.removeTrack(id);
+
     return true;
   }
 
@@ -73,5 +87,9 @@ export class InMemoryTrackStorage implements TrackStorage {
         track.artistId = null;
       }
     });
+  }
+
+  exist(id): boolean {
+    return this.tracks.some((track) => track.id === id);
   }
 }

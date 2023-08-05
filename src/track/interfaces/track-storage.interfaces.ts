@@ -10,4 +10,5 @@ export interface TrackStorage {
   remove: (id: string) => boolean;
   clearAlbumId: (id: string) => void;
   clearArtistId: (id: string) => void;
+  exist: (id) => boolean;
 }

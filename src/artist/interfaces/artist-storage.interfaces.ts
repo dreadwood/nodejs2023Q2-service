@@ -8,4 +8,5 @@ export interface ArtistStorage {
   create: (dto: CreateArtistDto) => ArtistEntity;
   update: (id: string, dto: UpdateArtistDto) => ArtistEntity;
   remove: (id: string) => boolean;
+  exist: (id: string) => boolean;
 }

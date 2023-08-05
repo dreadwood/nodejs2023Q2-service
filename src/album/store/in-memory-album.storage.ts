@@ -7,16 +7,22 @@ import { UpdateAlbumDto } from '../dto/update-album.dto';
 import { ModuleRef } from '@nestjs/core';
 import { InMemoryTrackStorage } from 'src/track/store/in-memory-track.storage';
 import { TrackStorage } from 'src/track/interfaces/track-storage.interfaces';
+import { FavoritesStorage } from 'src/favorites/interfaces/favorites-storage.interfaces';
+import { InMemoryFavoriteStorage } from 'src/favorites/store/in-memory-favorites.storage';
 
 @Injectable()
 export class InMemoryAlbumStorage implements AlbumStorage {
   private albums: AlbumEntity[] = [];
   private trackStorage: TrackStorage;
+  private favoritesStorage: FavoritesStorage;
 
   constructor(private moduleRef: ModuleRef) {}
 
   onModuleInit() {
     this.trackStorage = this.moduleRef.get(InMemoryTrackStorage, {
+      strict: false,
+    });
+    this.favoritesStorage = this.moduleRef.get(InMemoryFavoriteStorage, {
       strict: false,
     });
   }
@@ -68,6 +74,7 @@ export class InMemoryAlbumStorage implements AlbumStorage {
     ];
 
     this.trackStorage.clearAlbumId(id);
+    this.favoritesStorage.removeAlbum(id);
 
     return true;
   }
@@ -78,5 +85,9 @@ export class InMemoryAlbumStorage implements AlbumStorage {
         album.artistId = null;
       }
     });
+  }
+
+  exist(id): boolean {
+    return this.albums.some((album) => album.id === id);
   }
 }
