@@ -1104,8 +1104,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Favorites'
-        401:
-          $ref: '#/components/responses/UnauthorizedError'
 
   /favs/track/{id}:
     parameters:
@@ -1115,6 +1113,7 @@ paths:
         schema:
           type: string
           format: uuid
+          example: 0a35dd62-e09f-444b-a628-f4e7c6954f57
     post:
       tags:
         - Favorites
@@ -1125,10 +1124,38 @@ paths:
           description: Added successfully
         400:
           description: Bad. trackId is invalid (not uuid)
-        401:
-          $ref: '#/components/responses/UnauthorizedError'
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Validation failed (uuid v4 is expected)
+                  error:
+                    type: string
+                    example: Bad request
         422:
-          description: Track with id doesn't exist.
+          description: Unprocessable Content. Track with id doesn't exist.
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 422
+                  message:
+                    type: string
+                    example: Track not found
+                  error:
+                    type: string
+                    example: Unprocessable content
     delete:
       tags:
         - Favorites
@@ -1139,10 +1166,38 @@ paths:
           description: Deleted successfully
         400:
           description: Bad. trackId is invalid (not uuid)
-        401:
-          $ref: '#/components/responses/UnauthorizedError'
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Validation failed (uuid v4 is expected)
+                  error:
+                    type: string
+                    example: Bad request
         404:
           description: Track was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 404
+                  message:
+                    type: string
+                    example: Track not found
+                  error:
+                    type: string
+                    example: Not Found
 
   /favs/album/{id}:
     parameters:
@@ -1152,6 +1207,7 @@ paths:
         schema:
           type: string
           format: uuid
+          example: 0a35dd62-e09f-444b-a628-f4e7c6954f57
     post:
       tags:
         - Favorites
@@ -1162,10 +1218,38 @@ paths:
           description: Added successfully
         400:
           description: Bad. albumId is invalid (not uuid)
-        401:
-          $ref: '#/components/responses/UnauthorizedError'
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Validation failed (uuid v4 is expected)
+                  error:
+                    type: string
+                    example: Bad request
         422:
           description: Album with id doesn't exist.
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 422
+                  message:
+                    type: string
+                    example: Album not found
+                  error:
+                    type: string
+                    example: Unprocessable content
     delete:
       tags:
         - Favorites
@@ -1176,10 +1260,38 @@ paths:
           description: Deleted successfully
         400:
           description: Bad. albumId is invalid (not uuid)
-        401:
-          $ref: '#/components/responses/UnauthorizedError'
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Validation failed (uuid v4 is expected)
+                  error:
+                    type: string
+                    example: Bad request
         404:
           description: Album was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 404
+                  message:
+                    type: string
+                    example: Album not found
+                  error:
+                    type: string
+                    example: Not Found
 
   /favs/artist/{id}:
     parameters:
@@ -1189,6 +1301,7 @@ paths:
         schema:
           type: string
           format: uuid
+          example: 0a35dd62-e09f-444b-a628-f4e7c6954f57
     post:
       tags:
         - Favorites
@@ -1199,10 +1312,38 @@ paths:
           description: Added successfully
         400:
           description: Bad request. artistId is invalid (not uuid)
-        401:
-          $ref: '#/components/responses/UnauthorizedError'
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Validation failed (uuid v4 is expected)
+                  error:
+                    type: string
+                    example: Bad request
         422:
           description: Artist with id doesn't exist.
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 422
+                  message:
+                    type: string
+                    example: Artist not found
+                  error:
+                    type: string
+                    example: Unprocessable content
     delete:
       tags:
         - Favorites
@@ -1213,7 +1354,35 @@ paths:
           description: Deleted successfully
         400:
           description: Bad request. artistId is invalid (not uuid)
-        401:
-          $ref: '#/components/responses/UnauthorizedError'
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Validation failed (uuid v4 is expected)
+                  error:
+                    type: string
+                    example: Bad request
         404:
           description: Artist was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 404
+                  message:
+                    type: string
+                    example: Artist not found
+                  error:
+                    type: string
+                    example: Not Found
