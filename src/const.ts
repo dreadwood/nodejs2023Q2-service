@@ -1,4 +1,5 @@
 export const DEFAULT_PORT = 4000;
+export const DEFAULT_OPEN_API_FILE = 'api.yaml';
 export const DEFAULT_VERSION_USER = 1;
 
 export enum MessagesResponse {
