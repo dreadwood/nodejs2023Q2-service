@@ -76,6 +76,7 @@ components:
         id:
           type: string
           format: uuid
+          example: 0a35dd62-e09f-444b-a628-f4e7c6954f57
         name:
           type: string
           example: The Show Must Go On
@@ -115,7 +116,7 @@ paths:
   /user:
     get:
       tags:
-        - User
+        - Users
       summary: Get all users
       description: Gets all users
       responses:
@@ -129,7 +130,7 @@ paths:
                   $ref: '#/components/schemas/User'
     post:
       tags:
-        - User
+        - Users
       summary: Create user
       description: Creates a new user
       requestBody:
@@ -188,7 +189,7 @@ paths:
           example: 0a35dd62-e09f-444b-a628-f4e7c6954f57
     get:
       tags:
-        - User
+        - Users
       summary: Get single user by id
       description: Get single user by id
       responses:
@@ -232,10 +233,9 @@ paths:
                   error:
                     type: string
                     example: Not Found
-
     put:
       tags:
-        - User
+        - Users
       summary: Update a user's password
       description: Updates a user's password by ID
       requestBody:
@@ -330,10 +330,9 @@ paths:
                   error:
                     type: string
                     example: Not Found
-
     delete:
       tags:
-        - User
+        - Users
       summary: Delete user
       description: Deletes user by ID.
       responses:
@@ -374,10 +373,10 @@ paths:
                     type: string
                     example: Not Found
 
-  /tracks:
+  /track:
     get:
       tags:
-        - Track
+        - Tracks
       summary: Get tracks list
       description: Gets all library tracks list
       responses:
@@ -393,7 +392,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
     post:
       tags:
-        - Track
+        - Tracks
       summary: Add new track
       description: Add new track information
       requestBody:
@@ -407,9 +406,11 @@ paths:
                   type: string
                 artistId:
                   type: string
+                  nullable: true
                   format: uuid
                 albumId:
                   type: string
+                  nullable: true
                   format: uuid
                 duration:
                   type: integer
@@ -426,9 +427,27 @@ paths:
                 $ref: '#/components/schemas/Track'
         400:
           description: Bad request. body does not contain required fields
-        401:
-          $ref: '#/components/responses/UnauthorizedError'
-  /tracks/{id}:
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example:
+                      - name must be a string
+                      - name should not be empty
+                      - duration must be a number conforming to the specified constraints
+                      - duration should not be empty
+                  error:
+                    type: string
+                    example: Bad request
+
+  /track/{id}:
     parameters:
       - name: id
         in: path
@@ -436,9 +455,10 @@ paths:
         schema:
           type: string
           format: uuid
+          example: 0a35dd62-e09f-444b-a628-f4e7c6954f57
     get:
       tags:
-        - Track
+        - Tracks
       summary: Get single track by id
       description: Gets single track by id
       responses:
@@ -450,13 +470,41 @@ paths:
                 $ref: '#/components/schemas/Track'
         400:
           description: Bad request. trackId is invalid (not uuid)
-        401:
-          $ref: '#/components/responses/UnauthorizedError'
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Validation failed (uuid v4 is expected)
+                  error:
+                    type: string
+                    example: Bad request
         404:
           description: Track was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 404
+                  message:
+                    type: string
+                    example: Track not found
+                  error:
+                    type: string
+                    example: Not Found
     put:
       tags:
-        - Track
+        - Tracks
       summary: Update track information
       description: Update library track information by UUID
       requestBody:
@@ -514,13 +562,41 @@ paths:
                     nullable: true
         400:
           description: Bad request. trackId is invalid (not uuid)
-        401:
-          $ref: '#/components/responses/UnauthorizedError'
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Validation failed (uuid v4 is expected)
+                  error:
+                    type: string
+                    example: Bad request
         404:
           description: Track was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 404
+                  message:
+                    type: string
+                    example: Track not found
+                  error:
+                    type: string
+                    example: Not Found
     delete:
       tags:
-        - Track
+        - Tracks
       summary: Delete track
       description: Delete track from library
       responses:
@@ -528,14 +604,43 @@ paths:
           description: Deleted successfully
         400:
           description: Bad request. trackId is invalid (not uuid)
-        401:
-          $ref: '#/components/responses/UnauthorizedError'
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Validation failed (uuid v4 is expected)
+                  error:
+                    type: string
+                    example: Bad request
         404:
           description: Track was not found.
-  /albums:
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 404
+                  message:
+                    type: string
+                    example: Track not found
+                  error:
+                    type: string
+                    example: Not Found
+
+  /album:
     get:
       tags:
-        - Album
+        - Albums
       summary: Get albums list
       description: Gets all library albums list
       responses:
@@ -551,7 +656,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
     post:
       tags:
-        - Album
+        - Albums
       summary: Add new album
       description: Add new album information
       requestBody:
@@ -584,7 +689,8 @@ paths:
           description: Bad request. body does not contain required fields
         401:
           $ref: '#/components/responses/UnauthorizedError'
-  /albums/{id}:
+
+  /album/{id}:
     parameters:
       - name: id
         in: path
@@ -594,7 +700,7 @@ paths:
           format: uuid
     get:
       tags:
-        - Album
+        - Albums
       summary: Get single album by id
       description: Gets single album by id
       responses:
@@ -612,7 +718,7 @@ paths:
           description: Album was not found.
     put:
       tags:
-        - Album
+        - Albums
       summary: Update album information
       description: Update library album information by UUID
       requestBody:
@@ -649,7 +755,7 @@ paths:
           description: Album was not found.
     delete:
       tags:
-        - Album
+        - Albums
       summary: Delete album
       description: Delete album from library
       responses:
@@ -661,10 +767,11 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         404:
           description: Album was not found.
-  /artists:
+
+  /artist:
     get:
       tags:
-        - Artist
+        - Artists
       summary: Get all artists
       description: Gets all artists
       responses:
@@ -680,7 +787,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
     post:
       tags:
-        - Artist
+        - Artists
       summary: Add new artist
       description: Add new artist
       requestBody:
@@ -708,7 +815,8 @@ paths:
           description: Bad request. body does not contain required fields
         401:
           $ref: '#/components/responses/UnauthorizedError'
-  /artists/{id}:
+
+  /artist/{id}:
     parameters:
       - name: id
         in: path
@@ -718,7 +826,7 @@ paths:
           format: uuid
     get:
       tags:
-        - Artist
+        - Artists
       summary: Get single artist by id
       description: Get single artist by id
       responses:
@@ -736,7 +844,7 @@ paths:
           description: Artist was not found.
     put:
       tags:
-        - Artist
+        - Artists
       summary: Update artist information
       description: Update artist information by UUID
       requestBody:
@@ -768,7 +876,7 @@ paths:
           description: Artist was not found.
     delete:
       tags:
-        - Artist
+        - Artists
       summary: Delete artist
       description: Delete artist from library
       responses:
@@ -780,6 +888,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         404:
           description: Artist was not found.
+
   /favs:
     get:
       tags:
@@ -795,6 +904,7 @@ paths:
                 $ref: '#/components/schemas/Favorites'
         401:
           $ref: '#/components/responses/UnauthorizedError'
+
   /favs/track/{id}:
     parameters:
       - name: id
@@ -831,6 +941,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         404:
           description: Track was not found.
+
   /favs/album/{id}:
     parameters:
       - name: id
@@ -867,6 +978,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         404:
           description: Album was not found.
+
   /favs/artist/{id}:
     parameters:
       - name: id
