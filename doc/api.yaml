@@ -687,8 +687,25 @@ paths:
                 $ref: '#/components/schemas/Album'
         400:
           description: Bad request. body does not contain required fields
-        401:
-          $ref: '#/components/responses/UnauthorizedError'
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example:
+                      - name must be a string
+                      - name should not be empty
+                      - year must be a number conforming to the specified constraints
+                      - year should not be empt
+                  error:
+                    type: string
+                    example: Bad request
 
   /album/{id}:
     parameters:
@@ -698,6 +715,7 @@ paths:
         schema:
           type: string
           format: uuid
+          example: 0a35dd62-e09f-444b-a628-f4e7c6954f57
     get:
       tags:
         - Albums
@@ -712,10 +730,38 @@ paths:
                 $ref: '#/components/schemas/Album'
         400:
           description: Bad request. albumId is invalid (not uuid)
-        401:
-          $ref: '#/components/responses/UnauthorizedError'
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Validation failed (uuid v4 is expected)
+                  error:
+                    type: string
+                    example: Bad request
         404:
           description: Album was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 404
+                  message:
+                    type: string
+                    example: Album not found
+                  error:
+                    type: string
+                    example: Not Found
     put:
       tags:
         - Albums
@@ -749,10 +795,38 @@ paths:
                 $ref: '#/components/schemas/Album'
         400:
           description: Bad request. albumId is invalid (not uuid)
-        401:
-          $ref: '#/components/responses/UnauthorizedError'
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Validation failed (uuid v4 is expected)
+                  error:
+                    type: string
+                    example: Bad request
         404:
           description: Album was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 404
+                  message:
+                    type: string
+                    example: Album not found
+                  error:
+                    type: string
+                    example: Not Found
     delete:
       tags:
         - Albums
@@ -763,10 +837,38 @@ paths:
           description: Deleted successfully
         400:
           description: Bad request. albumId is invalid (not uuid)
-        401:
-          $ref: '#/components/responses/UnauthorizedError'
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Validation failed (uuid v4 is expected)
+                  error:
+                    type: string
+                    example: Bad request
         404:
           description: Album was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                title: example
+                properties:
+                  statusCode:
+                    type: number
+                    example: 404
+                  message:
+                    type: string
+                    example: Album not found
+                  error:
+                    type: string
+                    example: Not Found
 
   /artist:
     get:
