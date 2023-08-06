@@ -8,7 +8,15 @@
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone git@github.com:dreadwood/nodejs2023Q2-service.git
+```
+
+## Switch to the development branch
+
+_For now, the current version of the app is still in development. Keep an eye on Readme updates!_
+
+```
+git checkout working-branch
 ```
 
 ## Installing NPM modules
@@ -17,6 +25,10 @@ git clone {repository URL}
 npm install
 ```
 
+## Environment variables
+
+Create an `.env` file in the root directory using `.env.example` as an example
+
 ## Running application
 
 ```
@@ -24,7 +36,8 @@ npm start
 ```
 
 After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
+in your browser OpenAPI documentation by typing http://localhost:4000/api/.
+
 For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
 ## Testing
@@ -41,18 +54,6 @@ To run only one of all test suites
 
 ```
 npm run test -- <path to suite>
-```
-
-To run all test with authorization
-
-```
-npm run test:auth
-```
-
-To run only specific test suite with authorization
-
-```
-npm run test:auth -- <path to suite>
 ```
 
 ### Auto-fix and format
